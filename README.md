@@ -27,3 +27,10 @@ The trade-off is explicit: this library is pseudo-polynomial in the target, not 
 Values larger than the target are skipped rather than rejected. They cannot appear in any subset that sums to the target, so adding them would only force the bitset to grow or would be discarded anyway. Values must still be positive integers: zero and negatives throw `RangeError`, and a non-array first argument throws `TypeError`. A target of `0` is reachable with the empty subset, and the empty array is accepted.
 
 The bitset is a `Uint32Array`. JavaScript numbers are doubles, so a plain array of booleans would waste memory and a `BigInt` bitset would be slower for the sizes this library is meant for. The 32-bit word size is also what makes the shift arithmetic exact without masking surprises.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
